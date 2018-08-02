@@ -1,4 +1,5 @@
-FROM ubuntu:xenial
+FROM ubuntu:bionic
+MAINTAINER Vincent Chalnot <vincent.chalnot@gmail.com>
 
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
@@ -30,14 +31,14 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
 # Make default unix user id match www-data
-RUN usermod -u 1000 www-data
+RUN usermod -u ${USER_UID:-1000} www-data
 # Allow shell access for www-data
 RUN chsh -s /bin/zsh www-data
 # Make www-data sudoer (without password)
 RUN echo "www-data ALL=NOPASSWD: ALL" | (EDITOR="tee -a" visudo)
 # Create home directory and set proper permissions
 RUN mkdir -p $WWW_HOME
-RUN chown www-data:1000 $WWW_HOME
+RUN chown www-data:${USER_GID:-1000} $WWW_HOME
 
 USER www-data
 RUN git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $WWW_HOME/.oh-my-zsh
