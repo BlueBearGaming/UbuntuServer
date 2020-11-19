@@ -20,7 +20,8 @@ RUN apt-get clean && \
     locales \
     apt-utils \
     pv \
-    inetutils-ping
+    inetutils-ping \
+    iproute2
 
 # Rebuild locales properly
 RUN locale-gen en_US.UTF-8
@@ -38,10 +39,13 @@ RUN echo "www-data ALL=NOPASSWD: ALL" | (EDITOR="tee -a" visudo)
 RUN mkdir -p $WWW_HOME
 RUN chown www-data:${USER_GID:-1000} $WWW_HOME
 
+# Copy entrypoint script
+COPY entrypoint.sh /usr/bin/entrypoint.sh
+
 USER www-data
 RUN git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $WWW_HOME/.oh-my-zsh
 COPY zshrc $WWW_HOME/.zshrc
 WORKDIR $WWW_HOME
 
-ENTRYPOINT /usr/bin/zsh
-CMD []
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
+CMD ["zsh"]
