@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM ubuntu:latest
 MAINTAINER Vincent Chalnot <vincent.chalnot@gmail.com>
 
 RUN ln -fs /usr/share/zoneinfo/Europe/Paris /etc/localtime
