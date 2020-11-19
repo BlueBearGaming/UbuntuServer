@@ -10,7 +10,6 @@ ENV WWW_HOME /var/www
 # Update APT and install base packages
 RUN apt-get clean && \
     apt-get update && \
-    apt-get -y dist-upgrade \
     apt-get install -y \
     nano \
     curl \
@@ -20,7 +19,6 @@ RUN apt-get clean && \
     zsh \
     locales \
     apt-utils \
-    software-properties-common \
     pv \
     inetutils-ping
 
@@ -43,3 +41,7 @@ RUN chown www-data:${USER_GID:-1000} $WWW_HOME
 USER www-data
 RUN git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git $WWW_HOME/.oh-my-zsh
 COPY zshrc $WWW_HOME/.zshrc
+WORKDIR $WWW_HOME
+
+ENTRYPOINT /usr/bin/zsh
+CMD []
