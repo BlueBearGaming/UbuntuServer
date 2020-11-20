@@ -19,6 +19,7 @@ RUN apt-get clean && \
     zsh \
     locales \
     apt-utils \
+    software-properties-common \
     pv \
     inetutils-ping \
     iproute2
